@@ -27,4 +27,22 @@ def register():
         user = User(email = form.email.data,
          author = form.author.data,
          password = form.password.data)
+
+        db.session.add(user)
+        db.session.commit()
+
+        mail_message("Welcome to Pitch It Up!","email/welcome_user",user.email,user=user)
+
+        title = "New Account"
+
+        return redirect(url_for('auth.login'))
+
+    return render_template('auth/register.html',registration_form = form)
+
+@auth.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("main.index"))
+
          
